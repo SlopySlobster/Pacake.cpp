@@ -17,9 +17,15 @@ int main() {
 
 	//load in images
 	sf::Texture brick;
-	brick.loadFromFile("cake.jpg");
+	brick.loadFromFile("cake2.jpg");
 	sf::Sprite wall;
 	wall.setTexture(brick);
+
+	sf::Texture pacman;
+	pacman.loadFromFile("pac.png");
+	sf::IntRect pac(0, 0, 70, 70);
+	sf::Sprite playerImg(pacman, pac);
+
 
 	int map[12][20] = {
 		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -133,13 +139,13 @@ int main() {
 			vx = 0;
 		}
 		//UP collision
-		if (vy < 0 && ((map[(ypos-5) / 80][(xpos) / 80] == 1) || (map[(ypos -5) / 80][(xpos + radius * 2) / 80] == 1)))
+		if (vy < 0 && ((map[(ypos - 5) / 80][(xpos) / 80] == 1) || (map[(ypos - 5) / 80][(xpos + radius * 2) / 80] == 1)))
 		{
 			cout << "up collision" << endl;
 			vy = 0;
 		}
 		//DOWN collision
-		if (vy > 0 && ((map[(ypos + radius * 2 + 5) / 80][(xpos) / 80] == 1) || (map[(ypos + radius * 2 + 5) / 80][(xpos+radius*2) / 80] == 1)))
+		if (vy > 0 && ((map[(ypos + radius * 2 + 5) / 80][(xpos) / 80] == 1) || (map[(ypos + radius * 2 + 5) / 80][(xpos + radius * 2) / 80] == 1)))
 		{
 			cout << "down collision" << endl;
 			vy = 0;
@@ -150,10 +156,31 @@ int main() {
 		ypos += vy;
 		player.setPosition(xpos, ypos);
 
+
+		//animation
+
+		if (vx != 0 || vy != 0) {
+			ticker += 1
+			if (ticker % 10 == 0)
+				frameNum += 1;
+			if (frameNum > 3)
+				frameNum = 0;
+
+		}
+		if (direction == RIGHT) rowNum = 0;
+		else if (direction == LEFT)rowNum = 1;
+		else if (direction == UP)rowNum = 2;
+		else row Num = 3;
+
+		pac = sf::IntRect(frameNum * 70, rowNum * 70, 68, 68);
+		sf::Sprite playerIng(pacman, pac);
+		playerIng.setPosition(xps, ypos);
+
+
 		//GHOST AI-----------------------------------
 		Blinky.chase1(xpos, ypos, map);
-		Inky.chase1((xpos+ypos)/2, ypos/1.5, map);
-		Pinky.chase1(xpos - 10, ypos-10, map);
+		Inky.chase1((xpos + ypos) / 2, ypos / 1.5, map);
+		Pinky.chase1(xpos - 10, ypos - 10, map);
 		Ginky.chase1(rand() % xpos, rand() % ypos, map);
 
 		//check if pac's position has a 0(dot), if so, change it to a -1
@@ -191,4 +218,3 @@ int main() {
 
 	cout << "goodbye!" << endl;
 } //end of main
-
