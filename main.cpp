@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "ghost.h" 
 
+
 using namespace std;
 
 //enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, down is 3
@@ -17,7 +18,7 @@ int main() {
 
 	//load in images
 	sf::Texture brick;
-	brick.loadFromFile("cake2.jpg");
+	brick.loadFromFile("cake.png");
 	sf::Sprite wall;
 	wall.setTexture(brick);
 
@@ -25,6 +26,12 @@ int main() {
 	pacman.loadFromFile("pac.png");
 	sf::IntRect pac(0, 0, 70, 70);
 	sf::Sprite playerImg(pacman, pac);
+
+	//animation variables
+	int ticker = 0;
+	int rowNum = 0;
+	int frameNum = 0;
+	int direction = 0;
 
 
 	int map[12][20] = {
@@ -159,22 +166,22 @@ int main() {
 
 		//animation
 
-		if (vx != 0 || vy != 0) {
-			ticker += 1
-			if (ticker % 10 == 0)
-				frameNum += 1;
+		//if (vx != 0 || vy != 0) {
+			ticker += 1;
+				if (ticker % 10 == 0)
+					frameNum += 1;
 			if (frameNum > 3)
 				frameNum = 0;
 
-		}
-		if (direction == RIGHT) rowNum = 0;
-		else if (direction == LEFT)rowNum = 1;
-		else if (direction == UP)rowNum = 2;
-		else row Num = 3;
+		//}
+		if (keys[RIGHT] == true) rowNum = 0;
+		else if (keys[LEFT] == true)rowNum = 1;
+		else if (keys[UP] == true)rowNum = 2;
+		else if (keys[DOWN] == true)rowNum = 3;
 
 		pac = sf::IntRect(frameNum * 70, rowNum * 70, 68, 68);
-		sf::Sprite playerIng(pacman, pac);
-		playerIng.setPosition(xps, ypos);
+		sf::Sprite playerImg(pacman, pac);
+		playerImg.setPosition(xpos, ypos);
 
 
 		//GHOST AI-----------------------------------
@@ -211,7 +218,7 @@ int main() {
 		Inky.drawGhost(screen);
 		Pinky.drawGhost(screen);
 		Ginky.drawGhost(screen);
-		screen.draw(player); //draw player
+		screen.draw(playerImg); //draw player
 		screen.display(); //flips memory drawings onto screen
 
 	}//######################## end game loop ###################################################################################
